@@ -1,4 +1,4 @@
-# go-clean-arch-woth-standart
+# go-clean-arch-with-standard
 
 golang の標準パッケージを用いた Clean Archtecture + 軽量 DDD のサンプル
 
