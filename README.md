@@ -1,3 +1,7 @@
+# go-clean-arch-woth-standart
+
+golang の標準パッケージを用いた Clean Archtecture + 軽量 DDD のサンプル
+
 # 要件
 
 ```
@@ -34,12 +38,7 @@ POST /users でニックネーム、生年月日、興味のある本の ID を�
 
 参考：https://github.com/kotaroyamazaki/go-clean-arch-sample-with-standardissues/1
 
-### 依存性逆転の法則の利用
-
-DIP を用いてそれぞれの層は内部の層のインターフェースに依存するように実装しました。
-概要は README 下部記載のアーキテクチャ図に記載しました。
-
-### 値オブジェクト、エンティティの利用
+### 値オブジェクト、エンティティ
 
 `/internal/entites` 以下にエンティティと値オブジェクトを実装。
 エンティティ(entity) と 値オブジェクト(VO)は同一パッケージに入れています。
