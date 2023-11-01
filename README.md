@@ -1,6 +1,6 @@
 # go-clean-arch-with-standard-libs
 
-golang の標準パッケージを用いた Clean Archtecture + 軽量 DDD のサンプル
+Ggolang の標準パッケージを用いた Clean Archtecture + 軽量 DDD のサンプル
 
 # 要件
 
