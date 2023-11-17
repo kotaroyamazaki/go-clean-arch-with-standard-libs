@@ -3,9 +3,9 @@ package repository
 import (
 	"context"
 
-	"github.com/kotaroyamazaki/go-clean-arch-sample-with-standard/pkg/orm"
+	models "github.com/kotaroyamazaki/go-clean-arch-sample-with-standard/internal/entities/models/user"
 )
 
 type UserRepository interface {
-	Save(ctx context.Context, user *orm.User) error
+	Save(ctx context.Context, user *models.User) error
 }

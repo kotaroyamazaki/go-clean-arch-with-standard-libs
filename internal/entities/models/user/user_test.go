@@ -1,16 +1,19 @@
-package user
+package models
 
 import (
+	"log"
 	"reflect"
 	"testing"
 	"time"
 )
 
-func TestNew(t *testing.T) {
-	expectedUser, _ := New(nil, "kotaro", time.Date(1997, 3, 18, 15, 0, 0, 0, time.UTC), []int{1, 2, 3})
+func TestNewUser(t *testing.T) {
+	expectedUser, err := NewUser("kotaro", time.Date(1997, 3, 18, 15, 0, 0, 0, time.UTC), []int{1, 2, 3})
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	type args struct {
-		id            *int
 		nickName      string
 		birthDate     time.Time
 		favoriteItems []int
@@ -24,7 +27,6 @@ func TestNew(t *testing.T) {
 		{
 			name: "正常系",
 			args: args{
-				id:            nil,
 				nickName:      "kotaro",
 				birthDate:     time.Date(1997, 3, 18, 15, 0, 0, 0, time.UTC),
 				favoriteItems: []int{1, 2, 3},
@@ -35,7 +37,6 @@ func TestNew(t *testing.T) {
 		{
 			name: "名前が空の場合はエラーが返る",
 			args: args{
-				id:        nil,
 				nickName:  "",
 				birthDate: time.Date(1997, 3, 18, 15, 0, 0, 0, time.UTC),
 			},
@@ -45,7 +46,6 @@ func TestNew(t *testing.T) {
 		{
 			name: "生年月日が未来の日付の場合はエラーが返る",
 			args: args{
-				id:            nil,
 				nickName:      "",
 				birthDate:     time.Now().Add(1 * time.Microsecond),
 				favoriteItems: nil,
@@ -56,14 +56,31 @@ func TestNew(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := New(tt.args.id, tt.args.nickName, tt.args.birthDate, tt.args.favoriteItems)
+			got, err := NewUser(tt.args.nickName, tt.args.birthDate, tt.args.favoriteItems)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("New() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("New() = %v, want %v", got, tt.want)
-			}
+			assertUser(t, got, tt.want, "NewUser()")
 		})
+	}
+}
+
+func assertUser(t *testing.T, got, want *User, msg string) {
+	if got == nil && want == nil {
+		return
+	}
+	if got == nil || want == nil {
+		t.Fatalf("%s: got = %v, want = %v", msg, got, want)
+	}
+
+	if got.nickName != want.nickName {
+		t.Errorf("%s: nickName got = %v, want = %v", msg, got.nickName, want.nickName)
+	}
+	if got.birthDate != want.birthDate {
+		t.Errorf("%s: birthDate got = %v, want = %v", msg, got.birthDate, want.birthDate)
+	}
+	if !reflect.DeepEqual(got.favoriteItems, want.favoriteItems) {
+		t.Errorf("%s: favoriteItems got = %v, want = %v", msg, got.favoriteItems, want.favoriteItems)
 	}
 }

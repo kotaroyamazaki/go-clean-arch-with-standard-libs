@@ -2,7 +2,6 @@ package repository
 
 import (
 	"context"
-	"log"
 
 	"github.com/kotaroyamazaki/go-clean-arch-sample-with-standard/internal/entities/repository"
 	"github.com/kotaroyamazaki/go-clean-arch-sample-with-standard/pkg/orm"
@@ -19,11 +18,10 @@ func NewUserFavoriteBooksRepository() repository.UserFavoriteBooksRepository {
 	}
 }
 
-func (r *userFavoriteBooksRepository) Save(ctx context.Context, favotieBookSlice orm.UserFavoriteBookSlice) error {
-	if len(favotieBookSlice) == 0 {
+func (r *userFavoriteBooksRepository) Save(ctx context.Context, favotieBookIDs []int) error {
+	if len(favotieBookIDs) == 0 {
 		return nil
 	}
-	r.m[favotieBookSlice[0].UserID] = favotieBookSlice
-	log.Printf("save %v\n", favotieBookSlice)
+	// TODO: save
 	return nil
 }

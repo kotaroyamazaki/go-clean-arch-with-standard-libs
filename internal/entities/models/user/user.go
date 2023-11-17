@@ -1,15 +1,18 @@
-package user
+package models
 
-import "time"
+import (
+	"math/rand"
+	"time"
+)
 
 type User struct {
-	id            *int
+	ID            int
 	nickName      NickName
 	birthDate     BitrhDate
 	favoriteItems []int
 }
 
-func New(id *int, nickName string, birthDate time.Time, favoriteItems []int) (*User, error) {
+func NewUser(nickName string, birthDate time.Time, favoriteItems []int) (*User, error) {
 	nn, err := newNicKName(nickName)
 	if err != nil {
 		return nil, err
@@ -19,8 +22,11 @@ func New(id *int, nickName string, birthDate time.Time, favoriteItems []int) (*U
 		return nil, err
 	}
 
+	// TODO: UUIDやULIDを用いる
+	id := rand.Int()
+
 	return &User{
-		id:            id,
+		ID:            id,
 		nickName:      *nn,
 		birthDate:     *bd,
 		favoriteItems: favoriteItems,

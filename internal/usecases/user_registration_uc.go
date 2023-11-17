@@ -4,10 +4,10 @@ import (
 	"context"
 	"time"
 
+	models "github.com/kotaroyamazaki/go-clean-arch-sample-with-standard/internal/entities/models/user"
 	"github.com/kotaroyamazaki/go-clean-arch-sample-with-standard/internal/entities/repository"
-	"github.com/kotaroyamazaki/go-clean-arch-sample-with-standard/internal/entities/user"
+
 	"github.com/kotaroyamazaki/go-clean-arch-sample-with-standard/internal/infra/db"
-	"github.com/kotaroyamazaki/go-clean-arch-sample-with-standard/pkg/orm"
 )
 
 type userUsecase struct {
@@ -26,26 +26,16 @@ func NewUserUsecase(userRepo repository.UserRepository, favoriteBookRepo reposit
 }
 
 func (uc *userUsecase) Register(ctx context.Context, birthDate time.Time, nickname string, favoriteBookIDs []int) error {
-	u, err := user.New(nil, nickname, birthDate, favoriteBookIDs)
+	u, err := models.NewUser(nickname, birthDate, favoriteBookIDs)
 	if err != nil {
 		return err
 	}
 
-	dbUser := orm.NewUser(
-		u.GetNickName().String(),
-		u.GetBirthDate().Time(),
-	)
 	return db.RunTransaction(ctx, func(ctx context.Context) error {
-		if err := uc.userRepo.Save(ctx, dbUser); err != nil {
+		if err := uc.userRepo.Save(ctx, u); err != nil {
 			return err
 		}
-		_favoriteBookIDs := make(orm.UserFavoriteBookSlice, 0, len(favoriteBookIDs))
-		for _, pID := range favoriteBookIDs {
-			_favoriteBookIDs = append(_favoriteBookIDs, orm.NewUserFavoriteBook(
-				dbUser.ID, pID,
-			))
-		}
 
-		return uc.favoriteBookRepo.Save(ctx, _favoriteBookIDs)
+		return uc.favoriteBookRepo.Save(ctx, favoriteBookIDs)
 	})
 }

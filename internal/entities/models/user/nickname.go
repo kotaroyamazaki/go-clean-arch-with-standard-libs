@@ -1,4 +1,4 @@
-package user
+package models
 
 import "github.com/kotaroyamazaki/go-clean-arch-sample-with-standard/internal/entities"
 
